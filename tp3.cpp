@@ -6,19 +6,32 @@
 #include <chrono>
 using namespace std;
 
-int LerArray(string nome_arquivo) {
-    fstream arquivo(nome_arquivo)
+void PrintVector(const std::vector<double>& vetor) {
+    std::cout << "[";
+    for (size_t i = 0; i < vetor.size(); ++i) {
+        std::cout << vetor[i];
+        if (i != vetor.size() - 1) {
+            std::cout << ", ";
+        }
+    }
+    std::cout << "]" << std::endl;
+}
+
+vector<double> LerArray(string nome_arquivo) {
+    fstream arquivo(nome_arquivo);
+
     if(!arquivo.is_open()) {
       cerr << "Erro na leitura do arquivo" << endl;
-      return 1;
     }
 
     vector<double> arr;
     double valor;
-    while(cin >> valor)
-        arr.push_back(valor)
+    while(arquivo >> valor)
+        arr.push_back(valor);
 
     arquivo.close();
+
+    return arr;
 }
 
 vector<double> Dijkstra(vector<double> array) {
@@ -42,7 +55,7 @@ vector<double> Dijkstra(vector<double> array) {
 }
 
 vector<double> NossoMetodo(vector<double> array) {
-    vector<double> initial = vector<double>(0.0, array.size());
+    vector<double> initial = vector<double>(array.size(), 0.0);
     int beg = 0;
     int end = array.size()-1;
 
@@ -57,70 +70,100 @@ vector<double> NossoMetodo(vector<double> array) {
     }
 
     return initial;
+
 }
 
 int main() {
-    
-    vector<double> array_uniforme = LerArray("");
-    vector<double> array_nao_uniforme = LerArray("");
-    vector<double> array_uniforme_quase_ordenado = LerArray("");
-    vector<double> array_nao_uniforme_quase_ordenado = LerArray("");
+    vector<double> array_uniforme = LerArray("./array_uniforme_10m.txt");
+    vector<double> array_nao_uniforme = LerArray("./array_nao_uniforme_10m.txt");
+    vector<double> array_uniforme_quase_ordenado = LerArray("./array_uniforme_quase_ordenado_10m.txt");
+    vector<double> array_nao_uniforme_quase_ordenado = LerArray("./array_nao_uniforme_quase_ordenado_10m.txt");
 
     cout << "Nosso metodo com array uniforme e dados aleatorios" << endl;
+
     auto tempo_inicial = chrono::high_resolution_clock::now();
     NossoMetodo(array_uniforme);
     auto tempo_final = chrono::high_resolution_clock::now();
-    auto tempo = chrono::duration_cast<chrono::seconds>(tempo_final - tempo_inicial);
-    cout << "Tempo: " << tempo.count() << " segundos" << endl << endl;
+    auto tempo = chrono::duration_cast<chrono::milliseconds>(tempo_final - tempo_inicial);
+
+    cout << "Tempo: " << tempo.count() << " ms" << endl << endl;
+
+    // ================================================
 
     cout << "Metodo de Dijkstra com array uniforme e dados aleatorios" << endl;
+
     tempo_inicial = chrono::high_resolution_clock::now();
     Dijkstra(array_uniforme);
     tempo_final = chrono::high_resolution_clock::now();
-    tempo = chrono::duration_cast<chrono::seconds>(tempo_final - tempo_inicial);
-    cout << "Tempo: " << tempo.count() << " segundos" << endl << endl;
+    tempo = chrono::duration_cast<chrono::milliseconds>(tempo_final - tempo_inicial);
+
+    cout << "Tempo: " << tempo.count() << " ms" << endl << endl;
+
+    // ================================================
 
     cout << "Nosso metodo com array nao uniforme e dados aleatorios" << endl;
+
     tempo_inicial = chrono::high_resolution_clock::now();
     NossoMetodo(array_nao_uniforme);
     tempo_final = chrono::high_resolution_clock::now();
-    tempo = chrono::duration_cast<chrono::seconds>(tempo_final - tempo_inicial);
-    cout << "Tempo: " << tempo.count() << " segundos" << endl << endl;
+    tempo = chrono::duration_cast<chrono::milliseconds>(tempo_final - tempo_inicial);
+
+    cout << "Tempo: " << tempo.count() << " ms" << endl << endl;
+
+    // ================================================
 
     cout << "Metodo de Dijkstra com array nao uniforme e dados aleatorios" << endl;
+
     tempo_inicial = chrono::high_resolution_clock::now();
     Dijkstra(array_nao_uniforme);
     tempo_final = chrono::high_resolution_clock::now();
-    tempo = chrono::duration_cast<chrono::seconds>(tempo_final - tempo_inicial);
-    cout << "Tempo: " << tempo.count() << " segundos" << endl << endl;
+    tempo = chrono::duration_cast<chrono::milliseconds>(tempo_final - tempo_inicial);
+
+    cout << "Tempo: " << tempo.count() << " ms" << endl << endl;
+
+    // ================================================
 
     cout << "Nosso metodo com array uniforme e dados quase ordenados" << endl;
+
     tempo_inicial = chrono::high_resolution_clock::now();
     NossoMetodo(array_uniforme_quase_ordenado);
     tempo_final = chrono::high_resolution_clock::now();
-    tempo = chrono::duration_cast<chrono::seconds>(tempo_final - tempo_inicial);
-    cout << "Tempo: " << tempo.count() << " segundos" << endl << endl;
+    tempo = chrono::duration_cast<chrono::milliseconds>(tempo_final - tempo_inicial);
+
+    cout << "Tempo: " << tempo.count() << " ms" << endl << endl;
+
+    // ================================================
 
     cout << "Metodo de Dijkstra com array uniforme e dados quase ordenados" << endl;
+
     tempo_inicial = chrono::high_resolution_clock::now();
     Dijkstra(array_uniforme_quase_ordenado);
     tempo_final = chrono::high_resolution_clock::now();
-    tempo = chrono::duration_cast<chrono::seconds>(tempo_final - tempo_inicial);
-    cout << "Tempo: " << tempo.count() << " segundos" << endl << endl;
+    tempo = chrono::duration_cast<chrono::milliseconds>(tempo_final - tempo_inicial);
+
+    cout << "Tempo: " << tempo.count() << " ms" << endl << endl;
+
+    // ================================================
     
     cout << "Nosso metodo com array nao uniforme e dados quase ordenados" << endl;
+
     tempo_inicial = chrono::high_resolution_clock::now();
     NossoMetodo(array_nao_uniforme_quase_ordenado);
     tempo_final = chrono::high_resolution_clock::now();
-    tempo = chrono::duration_cast<chrono::seconds>(tempo_final - tempo_inicial);
-    cout << "Tempo: " << tempo.count() << " segundos" << endl << endl;
+    tempo = chrono::duration_cast<chrono::milliseconds>(tempo_final - tempo_inicial);
+
+    cout << "Tempo: " << tempo.count() << " ms" << endl << endl;
+
+    // ================================================
 
     cout << "Metodo de Dijkstra com array nao uniforme e dados quase ordenados" << endl;
+    
     tempo_inicial = chrono::high_resolution_clock::now();
     Dijkstra(array_nao_uniforme_quase_ordenado);
     tempo_final = chrono::high_resolution_clock::now();
-    tempo = chrono::duration_cast<chrono::seconds>(tempo_final - tempo_inicial);
-    cout << "Tempo: " << tempo.count() << " segundos" << endl << endl;
+    tempo = chrono::duration_cast<chrono::milliseconds>(tempo_final - tempo_inicial);
+
+    cout << "Tempo: " << tempo.count() << " ms" << endl << endl;
 
     return 0;
 }
